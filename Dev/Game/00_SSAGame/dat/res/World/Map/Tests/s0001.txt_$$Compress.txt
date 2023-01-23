@@ -41,7 +41,15 @@
 3
 1	ブロック01	None
 ;;REPEAT;;
-59
+39
+0	None	None
+0	None	敵02
+;;REPEAT;;
+2
+0	None	None
+0	None	敵02
+;;REPEAT;;
+16
 0	None	None
 1	ブロック01	None
 ;;REPEAT;;
@@ -53,7 +61,27 @@
 0	None	None
 1	ブロック01	None
 ;;REPEAT;;
+42
+0	None	None
+0	None	敵02
+;;REPEAT;;
+6
+0	None	None
+0	None	敵01
+;;REPEAT;;
+9
+0	None	None
+1	ブロック01	None
+;;REPEAT;;
 59
+0	None	None
+1	ブロック01	None
+;;REPEAT;;
+51
+0	None	None
+0	None	敵01
+;;REPEAT;;
+7
 0	None	None
 1	ブロック01	None
 ;;REPEAT;;
@@ -65,20 +93,19 @@
 0	None	None
 1	ブロック01	None
 ;;REPEAT;;
-59
+53
+0	None	None
+0	None	敵01
+;;REPEAT;;
+5
 0	None	None
 1	ブロック01	None
 ;;REPEAT;;
-59
+40
 0	None	None
-1	ブロック01	None
 ;;REPEAT;;
-59
-0	None	None
-1	ブロック01	None
-;;REPEAT;;
-45
-0	None	None
+5
+1	ブロック03	None
 ;;REPEAT;;
 5
 1	ブロック02	None
@@ -87,7 +114,11 @@
 0	None	None
 1	ブロック01	None
 ;;REPEAT;;
-47
+39
+0	None	None
+;;REPEAT;;
+7
+1	ブロック03	None
 0	None	None
 ;;REPEAT;;
 3
@@ -97,7 +128,11 @@
 0	None	None
 1	ブロック01	None
 ;;REPEAT;;
-47
+39
+0	None	None
+;;REPEAT;;
+7
+1	ブロック03	None
 0	None	None
 ;;REPEAT;;
 3
@@ -107,7 +142,11 @@
 0	None	None
 1	ブロック01	None
 ;;REPEAT;;
-47
+39
+0	None	None
+;;REPEAT;;
+7
+1	ブロック03	None
 0	None	None
 ;;REPEAT;;
 3
@@ -117,7 +156,13 @@
 0	None	None
 1	ブロック01	None
 ;;REPEAT;;
-47
+39
+0	None	None
+;;REPEAT;;
+6
+1	ブロック03	None
+;;REPEAT;;
+2
 0	None	None
 ;;REPEAT;;
 3
@@ -127,7 +172,13 @@
 0	None	None
 1	ブロック01	None
 ;;REPEAT;;
-47
+40
+0	None	None
+;;REPEAT;;
+5
+1	ブロック03	None
+;;REPEAT;;
+2
 0	None	None
 ;;REPEAT;;
 3
@@ -137,7 +188,13 @@
 0	None	None
 1	ブロック01	None
 ;;REPEAT;;
-47
+41
+0	None	None
+;;REPEAT;;
+3
+1	ブロック03	None
+;;REPEAT;;
+3
 0	None	None
 ;;REPEAT;;
 3
