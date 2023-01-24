@@ -35,25 +35,29 @@
 0	None	None
 1	ブロック01	None
 ;;REPEAT;;
-59
+40
+0	None	None
+0	None	敵02
+;;REPEAT;;
+3
+0	None	None
+0	None	敵02
+;;REPEAT;;
+14
 0	None	None
 ;;REPEAT;;
 3
 1	ブロック01	None
 ;;REPEAT;;
-39
-0	None	None
-0	None	敵02
-;;REPEAT;;
-2
-0	None	None
-0	None	敵02
-;;REPEAT;;
-16
+59
 0	None	None
 1	ブロック01	None
 ;;REPEAT;;
-59
+47
+0	None	None
+0	None	敵01
+;;REPEAT;;
+11
 0	None	None
 1	ブロック01	None
 ;;REPEAT;;
@@ -93,11 +97,7 @@
 0	None	None
 1	ブロック01	None
 ;;REPEAT;;
-53
-0	None	None
-0	None	敵01
-;;REPEAT;;
-5
+59
 0	None	None
 1	ブロック01	None
 ;;REPEAT;;
