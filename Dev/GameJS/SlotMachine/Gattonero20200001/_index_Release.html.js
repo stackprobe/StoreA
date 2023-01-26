@@ -63,12 +63,7 @@ BAR : x 1000<br/>
 
 <br/>
 
-テスト用機能：<br/>
-none<br/>
-
-<br/>
-
-背景：<br/>
+タイトル・メニューの背景：<br/>
 　フリー素材ぱくたそ<br/>
 　https://www.pakutaso.com/<br/>
 
@@ -78,19 +73,23 @@ none<br/>
 　春一番のフリー素材工房<br/>
 　https://commons.nicovideo.jp/material/nc226455<br/>
 
-<!--
+<br/>
 
-効果音：<br/>
-　小森平<br/>
-　https://taira-komori.jpn.org/<br/>
+エフェクト：<br/>
+　ぴぽや<br/>
+　https://pipoya.net/<br/>
 
 <br/>
 
 音楽：<br/>
-　魔王魂<br/>
-　https://maou.audio/<br/>
+　フリーBGM・音楽素材MusMus<br/>
+　https://musmus.main.jp<br/>
 
--->
+<br/>
+
+効果音：<br/>
+　小森平<br/>
+　https://taira-komori.jpn.org/<br/>
 
 <br/>
 <br/>
