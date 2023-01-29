@@ -8,8 +8,8 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Windows.Forms;
 using Charlotte.Commons;
-using Charlotte.Utilities;
 using Charlotte.Tests;
+using Charlotte.Utilities;
 
 namespace Charlotte
 {
@@ -132,7 +132,7 @@ namespace Charlotte
 			}
 			else if (ext == ".gif")
 			{
-				file = ConvertGifToPngs(file); // file == ディレクトリ
+				file = ConvertGifToPngs(file); // 注意：file == ディレクトリ
 
 				foreach (string f in Directory.GetFiles(file))
 				{
@@ -182,6 +182,9 @@ namespace Charlotte
 					},
 					wd.GetPath(".")
 					);
+
+				if (Directory.GetFiles(wd.GetPath("out")).Length < 1)
+					throw new Exception("出力失敗");
 
 				SCommon.CopyDir(wd.GetPath("out"), outputDir);
 			}
@@ -239,6 +242,9 @@ namespace Charlotte
 					},
 					wd.GetPath(".")
 					);
+
+				if (!File.Exists(wd.GetPath("output.mp3")))
+					throw new Exception("出力失敗");
 
 				File.Copy(wd.GetPath("output.mp3"), outputFile);
 			}
