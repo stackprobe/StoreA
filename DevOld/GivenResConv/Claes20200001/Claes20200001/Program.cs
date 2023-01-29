@@ -279,7 +279,7 @@ namespace Charlotte
 					);
 
 				if (!File.Exists(wd.GetPath(wFile)))
-					throw new Exception("出力失敗");
+					throw new Exception("FFMPEG Fault");
 
 				File.Copy(wFile, outputFile);
 			}
