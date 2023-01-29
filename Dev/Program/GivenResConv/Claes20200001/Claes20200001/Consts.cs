@@ -7,6 +7,6 @@ namespace Charlotte
 {
 	public static class Consts
 	{
-		// none
+		public const string FFMPEG_EXE = @"C:\app\ffmpeg-4.1.3-win64-shared\bin\ffmpeg.exe";
 	}
 }
