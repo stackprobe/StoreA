@@ -37,7 +37,8 @@ namespace Charlotte
 		{
 			// -- choose one --
 
-			Main4(new ArgsReader(new string[] { @"C:\temp\riulril_action_game" }));
+			//Main4(new ArgsReader(new string[] { @"C:\temp\riulril_action_game" }));
+			Main4(new ArgsReader(new string[] { @"C:\temp\riulril_action_game", @"C:\temp\out" }));
 			//new Test0001().Test01();
 			//new Test0002().Test01();
 			//new Test0003().Test01();
@@ -66,13 +67,29 @@ namespace Charlotte
 
 		private void Main5(ArgsReader ar)
 		{
-			// ---- 引数チェック
+			// ---- 引数読み込み_引数チェック
 
 			string inputDir = SCommon.MakeFullPath(ar.NextArg());
-			string outputDir = Path.Combine(SCommon.GetOutputDir(), "res");
+			string outputDir;
 
 			if (!Directory.Exists(inputDir))
 				throw new Exception("no inputDir");
+
+			if (ar.HasArgs())
+			{
+				outputDir = SCommon.MakeFullPath(ar.NextArg());
+
+				ar.End();
+
+				SCommon.DeletePath(outputDir);
+				SCommon.CreateDir(outputDir);
+			}
+			else
+			{
+				ar.End();
+
+				outputDir = Path.Combine(SCommon.GetOutputDir(), "res");
+			}
 
 			// ---- 実行前チェック
 
@@ -87,93 +104,102 @@ namespace Charlotte
 
 			SCommon.CopyDir(inputDir, outputDir);
 
-			string[] files = Directory.GetFiles(outputDir, "*", SearchOption.AllDirectories)
-				.OrderBy(SCommon.Comp)
-				.ToArray();
-
-			foreach (string file in files)
-				ConvertResFile(file);
+			ConvertMain(outputDir);
 
 			ProcMain.WriteLog("done!");
 		}
 
-		private void ConvertResFile(string file)
+		private void ConvertMain(string targetDir)
 		{
-			ProcMain.WriteLog("< " + file);
-
-			string name = Path.GetFileNameWithoutExtension(file);
-			string nameFmt = LiteFormat(name);
-
-			if (
-				nameFmt == "9" ||
-				nameFmt == "99" ||
-				nameFmt == "999"
-				)
+			foreach (string file in Common.GetAllFile(targetDir))
 			{
-				string fileNew = Path.Combine(SCommon.ToParentPath(file), ZPad(name, 4) + Path.GetExtension(file));
+				string name = Path.GetFileNameWithoutExtension(file);
 
-				if (ExistPath(fileNew))
-					throw new Exception("出力ファイルの重複：" + fileNew);
-
-				File.Move(file, fileNew);
-				file = fileNew;
-			}
-
-			string ext = Path.GetExtension(file).ToLower();
-
-			if (
-				ext == ".bmp" ||
-				ext == ".jpg" ||
-				ext == ".jpeg"
-				)
-			{
-				file = ConvertAnyToPng(file);
-				ConvertPicture(file);
-			}
-			else if (ext == ".gif")
-			{
-				file = ConvertGifToPngs(file); // 注意：file == ディレクトリ
-
-				foreach (string f in Directory.GetFiles(file))
+				if (Regex.IsMatch(name, "^[0-9]{1,3}$"))
 				{
-					ConvertPicture(f);
+					string fileNew = Path.Combine(SCommon.ToParentPath(file), int.Parse(name).ToString("D4") + Path.GetExtension(file));
+
+					ProcMain.WriteLog("< " + file);
+					ProcMain.WriteLog("> " + fileNew);
+
+					if (Common.ExistsPath(fileNew))
+						throw new Exception("Dupl-Path: " + fileNew);
+
+					File.Move(file, fileNew);
+
+					ProcMain.WriteLog("done");
 				}
 			}
-			else if (ext == ".png")
+			foreach (string file in Common.GetAllFile(targetDir))
 			{
-				ConvertPicture(file);
-			}
-			else if (ext == ".ogg")
-			{
-				file = ConvertAnyToMP3(file);
-			}
+				string ext = Path.GetExtension(file).ToLower();
 
-			ProcMain.WriteLog("> " + file);
+				if (
+					ext == ".bmp" ||
+					ext == ".jpg" ||
+					ext == ".jpeg"
+					)
+				{
+					string fileNew = SCommon.ChangeExt(file, ".png");
+
+					ProcMain.WriteLog("< " + file);
+					ProcMain.WriteLog("> " + fileNew);
+
+					if (Common.ExistsPath(fileNew))
+						throw new Exception("Dupl-Path: " + fileNew);
+
+					Canvas.LoadFromFile(file).Save(fileNew);
+					SCommon.DeletePath(file);
+
+					ProcMain.WriteLog("done");
+				}
+			}
+			foreach (string file in Common.GetAllFile(targetDir))
+			{
+				string ext = Path.GetExtension(file).ToLower();
+
+				if (ext == ".gif")
+				{
+					ConvertGifPictureToPngPictures(file);
+				}
+			}
+			foreach (string file in Common.GetAllFile(targetDir))
+			{
+				string ext = Path.GetExtension(file).ToLower();
+
+				if (ext == ".png")
+				{
+					ConvertPicture(file);
+				}
+			}
+			foreach (string file in Common.GetAllFile(targetDir))
+			{
+				string ext = Path.GetExtension(file).ToLower();
+
+				if (ext == ".ogg")
+				{
+					ConvertSound(file);
+				}
+			}
 		}
 
-		private string ConvertAnyToPng(string inputFile)
-		{
-			string outputFile = SCommon.ChangeExt(inputFile, ".png");
-
-			if (ExistPath(outputFile))
-				throw new Exception("出力ファイルの重複：" + outputFile);
-
-			Canvas.LoadFromFile(inputFile).Save(outputFile);
-			SCommon.DeletePath(inputFile);
-			return outputFile;
-		}
-
-		private string ConvertGifToPngs(string inputFile)
+		private void ConvertGifPictureToPngPictures(string inputFile)
 		{
 			string outputDir = SCommon.ChangeExt(inputFile, "");
 
-			if (ExistPath(outputDir))
-				throw new Exception("出力ディレクトリの重複：" + outputDir);
+			ProcMain.WriteLog("< " + inputFile);
+			ProcMain.WriteLog("> " + outputDir);
+
+			if (Common.ExistsPath(outputDir))
+				throw new Exception("Dupl-Path: " + outputDir);
 
 			using (WorkingDir wd = new WorkingDir())
 			{
-				File.Copy(inputFile, wd.GetPath("input.gif"));
-				SCommon.CreateDir(wd.GetPath("out"));
+				string rFile = wd.GetPath("input.gif");
+				string wDir = wd.GetPath("out");
+
+				File.Copy(inputFile, rFile);
+				SCommon.CreateDir(wDir);
 
 				SCommon.Batch(
 					new string[]
@@ -183,17 +209,20 @@ namespace Charlotte
 					wd.GetPath(".")
 					);
 
-				if (Directory.GetFiles(wd.GetPath("out")).Length < 1)
-					throw new Exception("出力失敗");
+				if (Directory.GetFiles(wDir).Length < 1)
+					throw new Exception("FFMPEG Fault");
 
-				SCommon.CopyDir(wd.GetPath("out"), outputDir);
+				SCommon.CopyDir(wDir, outputDir);
 			}
 			SCommon.DeletePath(inputFile);
-			return outputDir;
+
+			ProcMain.WriteLog("done");
 		}
 
 		private void ConvertPicture(string file)
 		{
+			ProcMain.WriteLog("* " + file);
+
 			Canvas canvas = Canvas.LoadFromFile(file);
 			bool changed = false;
 
@@ -220,61 +249,43 @@ namespace Charlotte
 
 			if (changed)
 				canvas.Save(file);
+
+			ProcMain.WriteLog("done");
 		}
 
-		private string ConvertAnyToMP3(string inputFile)
+		private void ConvertSound(string inputFile)
 		{
 			string outputFile = SCommon.ChangeExt(inputFile, ".mp3");
 
-			if (ExistPath(outputFile))
+			ProcMain.WriteLog("< " + inputFile);
+			ProcMain.WriteLog("> " + outputFile);
+
+			if (Common.ExistsPath(outputFile))
 				throw new Exception("出力ファイルの重複：" + outputFile);
 
 			using (WorkingDir wd = new WorkingDir())
 			{
-				string inputName = "input" + Path.GetExtension(inputFile);
+				string rFile = wd.GetPath("input" + Path.GetExtension(inputFile));
+				string wFile = wd.GetPath("output.mp3");
 
-				File.Copy(inputFile, wd.GetPath(inputName));
+				File.Copy(inputFile, rFile);
 
 				SCommon.Batch(
 					new string[]
 					{
-						Consts.FFMPEG_EXE + " -i " + inputName + " -ab 160k output.mp3"
+						Consts.FFMPEG_EXE + " -i " + Path.GetFileName(rFile) + " -ab 160k output.mp3"
 					},
 					wd.GetPath(".")
 					);
 
-				if (!File.Exists(wd.GetPath("output.mp3")))
+				if (!File.Exists(wd.GetPath(wFile)))
 					throw new Exception("出力失敗");
 
-				File.Copy(wd.GetPath("output.mp3"), outputFile);
+				File.Copy(wFile, outputFile);
 			}
 			SCommon.DeletePath(inputFile);
-			return outputFile;
-		}
 
-		private static bool ExistPath(string path)
-		{
-			return Directory.Exists(path) || File.Exists(path);
-		}
-
-		private static string LiteFormat(string str)
-		{
-			return new string(str.Select(chr =>
-			{
-				if (SCommon.DECIMAL.Contains(chr))
-					chr = '9';
-
-				return chr;
-			})
-			.ToArray());
-		}
-
-		private static string ZPad(string str, int minlen)
-		{
-			while (str.Length < minlen)
-				str = "0" + str;
-
-			return str;
+			ProcMain.WriteLog("done");
 		}
 	}
 }
