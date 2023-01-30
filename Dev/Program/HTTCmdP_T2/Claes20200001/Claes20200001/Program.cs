@@ -85,6 +85,8 @@ namespace Charlotte
 		{
 			// 複数のサーバーを起動していた場合、全て停止できるようにマニュアル・リセットとする。
 			using (EventWaitHandle evStop = new EventWaitHandle(false, EventResetMode.ManualReset, Consts.SERVER_STOP_EVENT_NAME))
+			// サーバー実行中・停止 確認用 -- ゆるいロック -- 最初のサーバーのみロック。シビアなタイミングは考慮無し。
+			using (Mutex mtxSvrLite = new Mutex(false, Consts.SERVER_RUNNING_MUTEX_NAME))
 			{
 				HTTPServer hs = new HTTPServer()
 				{
@@ -114,6 +116,17 @@ namespace Charlotte
 				if (ar.ArgIs("/S"))
 				{
 					evStop.Set();
+
+					ProcMain.WriteLog("WaitServerStop-ST");
+					for (int t = 0; t < 30; t++)
+					{
+						if (mtxSvrLite.WaitOne(1000))
+						{
+							mtxSvrLite.ReleaseMutex();
+							break;
+						}
+					}
+					ProcMain.WriteLog("WaitServerStop-ED");
 					return;
 				}
 				if (ar.HasArgs())
@@ -186,7 +199,21 @@ namespace Charlotte
 				ProcMain.WriteLog("DocRoot: " + this.DocRoot);
 				ProcMain.WriteLog("PortNo: " + hs.PortNo);
 
-				hs.Perform();
+				if (mtxSvrLite.WaitOne(0)) // サーバー実行_サーバーロック取れた場合
+				{
+					try
+					{
+						hs.Perform();
+					}
+					finally
+					{
+						mtxSvrLite.ReleaseMutex();
+					}
+				}
+				else // サーバー実行_サーバーロック取れなかった場合
+				{
+					hs.Perform();
+				}
 
 				ProcMain.WriteLog("HTTCmd-P-T2-End");
 			}
