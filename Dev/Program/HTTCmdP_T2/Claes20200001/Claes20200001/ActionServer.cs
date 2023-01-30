@@ -43,14 +43,8 @@ namespace Charlotte
 		/// <returns>アクション</returns>
 		private static Action<HTTPServerChannel> GetAction(string urlPath)
 		{
-			if (urlPath == "/AccessCounter-barnatsutobi")
-				return channel => Action_AccessCounter.Perform(channel, "barnatsutobi");
-
-			if (urlPath == "/AccessCounter-ornithopter")
-				return channel => Action_AccessCounter.Perform(channel, "ornithopter");
-
-			if (urlPath == "/AccessCounter-anemoscope")
-				return channel => Action_AccessCounter.Perform(channel, "anemoscope");
+			if (urlPath == "/AccessCounter-disintegration")
+				return channel => Action_AccessCounter.Perform(channel, "disintegration");
 
 			if (urlPath == "/API-RemoteEndPoint")
 				return channel => Action_RemoteEndPoint.Perform(channel);
