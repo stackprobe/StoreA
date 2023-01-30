@@ -23,7 +23,7 @@ namespace Charlotte
 		/// 共有データのルートフォルダ
 		/// 変更する場合は、初期化前に設定すること。
 		/// </summary>
-		public static string RootDir = @"C:\temp\HTTCmdP_ProgramData";
+		public static string RootDir = @"C:\temp\HTTCmdP_ProgramData_T2";
 
 		/// <summary>
 		/// 利用者：Action_AccessCounter
