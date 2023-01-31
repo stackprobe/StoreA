@@ -117,16 +117,24 @@ namespace Charlotte
 				{
 					evStop.Set();
 
-					ProcMain.WriteLog("WaitServerStop-ST");
-					for (int t = 0; t < 30; t++)
 					{
-						if (mtxSvrLite.WaitOne(1000))
+						const int WAIT_MAX = 30;
+
+						ProcMain.WriteLog("WaitWhileServerRunning-ST");
+
+						for (int waitCnt = 0; waitCnt < WAIT_MAX; waitCnt++)
 						{
-							mtxSvrLite.ReleaseMutex();
-							break;
+							ProcMain.WriteLog("waitCnt: " + ((double)waitCnt / WAIT_MAX).ToString("F3"));
+
+							if (mtxSvrLite.WaitOne(1000)) // ? サーバー停止した。
+							{
+								mtxSvrLite.ReleaseMutex();
+								break;
+							}
 						}
+						ProcMain.WriteLog("WaitWhileServerRunning-ED");
 					}
-					ProcMain.WriteLog("WaitServerStop-ED");
+
 					return;
 				}
 				if (ar.HasArgs())
@@ -199,7 +207,7 @@ namespace Charlotte
 				ProcMain.WriteLog("DocRoot: " + this.DocRoot);
 				ProcMain.WriteLog("PortNo: " + hs.PortNo);
 
-				if (mtxSvrLite.WaitOne(0)) // サーバー実行_サーバーロック取れた場合
+				if (mtxSvrLite.WaitOne(0)) // サーバー実行_ロックを取得できた場合
 				{
 					try
 					{
@@ -210,7 +218,7 @@ namespace Charlotte
 						mtxSvrLite.ReleaseMutex();
 					}
 				}
-				else // サーバー実行_サーバーロック取れなかった場合
+				else // サーバー実行_ロックを取得できなかった場合
 				{
 					hs.Perform();
 				}
