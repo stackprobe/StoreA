@@ -136,7 +136,8 @@ function* <generatorForTask> @@_SlotMain(<int> laneNo)
 	var<int[]> LANE_02_PIC_CNTS = [ 2, 3, 5, 7, 11, 13, 17, 1, 1 ];
 	var<int[]> LANE_03_PIC_CNTS = [ 3, 4, 5, 6, 7, 8, 9, 10, 1 ];
 	//*
-	var<int[]> LANE_XX_PIC_CNTS = [ 4, 5, 6, 7, 8, 9, 1, 1, 1 ];
+//	var<int[]> LANE_XX_PIC_CNTS = [ 4, 5, 6, 7, 8, 9, 1, 1, 1 ];
+	var<int[]> LANE_XX_PIC_CNTS = [ 15, 3, 3, 3, 1, 1, 1, 1, 1 ];
 	/*/
 	var<int[]> LANE_XX_PIC_CNTS =
 	[
@@ -226,14 +227,23 @@ gameLoop:
 					260,
 					230 + c * 200), 0.0))
 				{
-					if (1 <= @@_Credit && (mouseDown == 1 || (60 <= mouseDown && mouseDown % 10 == 0))) // ? 押下 or 連打
+//					if (1 <= @@_Credit && (mouseDown == 1 || (60 <= mouseDown && mouseDown % 10 == 0))) // ? 押下 or 連打
+					if (1 <= @@_Credit && (mouseDown == 1 || 60 <= mouseDown))
 					{
-						if (@@_Bets[c] < 99) // ? 投入可能
-						{
-							SE(S_BetCoin);
+//						var<int> dLmt = 1 + ToFix(mouseDown / 60.0);
+						var<int> dLmt = 1 + ToFix(mouseDown / 10.0);
 
-							@@_Bets[c]++;
-							@@_Credit--;
+						dLmt = Math.min(dLmt, 100);
+					
+						for (var<int> d = 0; d < dLmt; d++)
+						{
+							if (@@_Bets[c] < 1000) // ? 投入可能
+							{
+//								SE(S_BetCoin);
+
+								@@_Bets[c]++;
+								@@_Credit--;
+							}
 						}
 					}
 				}
@@ -497,10 +507,17 @@ function <void> @@_DrawSlot()
 
 	for (var<int> c = 0; c < 5; c++)
 	{
+		var<string> dispBet = ZPad(@@_Bets[c], 2, "0");
+
+		if (dispBet == "1000")
+		{
+			dispBet = "A00";
+		}
+
 		SetColor("#ffff00");
 		SetFSize(90);
 		SetPrint(80, 220 + c * 200, 0);
-		PrintLine("[" + ZPad(@@_Bets[c], 2, "0") + "]");
+		PrintLine("[" + dispBet + "]");
 	}
 
 	for (var<int> c = 0; c < 3; c++)
