@@ -10,20 +10,28 @@ var<TaskManager_t> GameTasks = CreateTaskManager();
 
 var<int> @@_Credit = 1000;
 var<int> @@_CreditDisp = @@_Credit;
+var<int> @@_CreditDiffStress = 0;
 
 function <void> @(UNQN)_EACH()
 {
-	if (108 < Math.abs(@@_Credit - @@_CreditDisp))
-	{
-		@@_CreditDisp = ToInt(Approach(@@_CreditDisp, @@_Credit, 0.99));
-	}
-	else if (@@_Credit < @@_CreditDisp)
+	@@_CreditDisp = ToInt(Approach(@@_CreditDisp, @@_Credit, 1.0 - 0.0001 * @@_CreditDiffStress));
+
+	if (@@_Credit < @@_CreditDisp)
 	{
 		@@_CreditDisp--;
 	}
 	else if (@@_Credit > @@_CreditDisp)
 	{
 		@@_CreditDisp++;
+	}
+
+	if (@@_Credit == @@_CreditDisp)
+	{
+		@@_CreditDiffStress = 0;
+	}
+	else
+	{
+		@@_CreditDiffStress++;
 	}
 }
 
