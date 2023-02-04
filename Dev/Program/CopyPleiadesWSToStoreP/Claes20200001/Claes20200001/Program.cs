@@ -19,51 +19,6 @@ namespace Charlotte
 			ProcMain.CUIMain(new Program().Main2);
 		}
 
-		// 以下様式統一のため用途別に好きな方を使ってね -- ★要削除
-
-#if true // 主にデバッガで実行するテスト用プログラム -- ★不要なら要削除
-		private void Main2(ArgsReader ar)
-		{
-			if (ProcMain.DEBUG)
-			{
-				Main3();
-			}
-			else
-			{
-				Main4();
-			}
-			SCommon.OpenOutputDirIfCreated();
-		}
-
-		private void Main3()
-		{
-			Main4();
-			SCommon.Pause();
-		}
-
-		private void Main4()
-		{
-			try
-			{
-				Main5();
-			}
-			catch (Exception ex)
-			{
-				ProcMain.WriteLog(ex);
-			}
-		}
-
-		private void Main5()
-		{
-			// -- choose one --
-
-			new Test0001().Test01();
-			//new Test0002().Test01();
-			//new Test0003().Test01();
-
-			// --
-		}
-#else // 主に実行ファイルにして使う/コマンド引数有り -- ★不要なら要削除
 		private void Main2(ArgsReader ar)
 		{
 			if (ProcMain.DEBUG)
@@ -81,7 +36,7 @@ namespace Charlotte
 		{
 			// -- choose one --
 
-			Main4(new ArgsReader(new string[] { }));
+			Main4(new ArgsReader(new string[] { "A" }));
 			//new Test0001().Test01();
 			//new Test0002().Test01();
 			//new Test0003().Test01();
@@ -101,17 +56,70 @@ namespace Charlotte
 			{
 				ProcMain.WriteLog(ex);
 
-				//MessageBox.Show("" + ex, Path.GetFileNameWithoutExtension(ProcMain.SelfFile) + " / エラー", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				MessageBox.Show("" + ex, Path.GetFileNameWithoutExtension(ProcMain.SelfFile) + " / エラー", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
 				//Console.WriteLine("Press ENTER key. (エラーによりプログラムを終了します)");
 				//Console.ReadLine();
 			}
 		}
 
+		private string WRootDir;
+
 		private void Main5(ArgsReader ar)
 		{
-			// TODO
+			string alpha = ar.NextArg();
+
+			ar.End();
+
+			if (!Regex.IsMatch(alpha, "^[A-Z]$"))
+				throw new Exception("Bad alpha (not A-Z)");
+
+			WRootDir = string.Format(Consts.W_ROOT_DIR_FORMAT, alpha);
+
+			ProcMain.WriteLog("< " + Consts.R_ROOT_DIR);
+			ProcMain.WriteLog("> " + WRootDir);
+
+			if (!Directory.Exists(Consts.R_ROOT_DIR))
+				throw new Exception("no R_ROOT_DIR");
+
+			if (!Directory.Exists(WRootDir))
+				throw new Exception("no WRootDir");
+
+			ProcMain.WriteLog("start!");
+
+			foreach (string dir in Directory.GetDirectories(Consts.R_ROOT_DIR))
+			{
+				CopyProject(dir, Path.Combine(WRootDir, Path.GetFileName(dir)));
+			}
+			ProcMain.WriteLog("done!");
 		}
-#endif
+
+		private void CopyProject(string projectDir, string destDir)
+		{
+			string projectDirLocalName = Path.GetFileName(projectDir);
+
+			if (projectDirLocalName[0] == '.') // ? ".metadata" はプロジェクトじゃないので除外
+				return;
+
+			ProcMain.WriteLog("< " + projectDir);
+			ProcMain.WriteLog("> " + destDir);
+
+			// 出力先クリア
+			SCommon.DeletePath(destDir);
+			SCommon.CreateDir(destDir);
+
+			CopySourceDir(projectDir, destDir, "src");
+		}
+
+		private void CopySourceDir(string projectDir, string destDir, string subDirLocalName)
+		{
+			string rDir = Path.Combine(projectDir, subDirLocalName);
+			string wDir = Path.Combine(destDir, subDirLocalName);
+
+			ProcMain.WriteLog("< " + rDir);
+			ProcMain.WriteLog("> " + wDir);
+
+			SCommon.CopyDir(rDir, wDir);
+		}
 	}
 }
