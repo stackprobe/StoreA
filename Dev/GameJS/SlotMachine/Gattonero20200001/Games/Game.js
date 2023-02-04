@@ -324,12 +324,16 @@ gameLoop:
 			}
 
 			// â¡ë¨ópíËêî
-			var<double> DRUM_MAX_SPEED = -0.5;
-			var<double[]> DRUM_ACCELE_RATES = [ 0.94, 0.95, 0.96 ];
+//			var<double> DRUM_MAX_SPEED = -0.5;
+			var<double> DRUM_MAX_SPEED = -0.75;
+//			var<double[]> DRUM_ACCELE_RATES = [ 0.94, 0.95, 0.96 ];
+			var<double[]> DRUM_ACCELE_RATES = [ 0.97, 0.98, 0.99 ];
 
 			// å∏ë¨ópíËêî
 			var<double> DRUM_MIN_SPEED = 0.015;
-			var<double> DRUM_DECELE_RATE = 0.965;
+//			var<double> DRUM_MIN_SPEED = 0.03;
+//			var<double> DRUM_DECELE_RATE = 0.965;
+			var<double> DRUM_DECELE_RATE = 0.97;
 
 			for (var<int> c = 0; c < 3; c++)
 			{
