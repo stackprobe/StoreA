@@ -3,17 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Charlotte.Commons;
-using Charlotte.Utilities;
 
-namespace Charlotte.Tests
+namespace Charlotte
 {
-	public class Test0004
+	public static class Common
 	{
-		public void Test01()
-		{
-
-
-
-		}
+		// none
 	}
 }
