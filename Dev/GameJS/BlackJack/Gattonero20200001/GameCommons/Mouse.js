@@ -42,6 +42,16 @@ function <void> @@_TouchEnd(<double> x, <double> y)
 	@@_ScreenPosToCanvasPos();
 }
 
+function <Action event> @@_GetEvPointer(<Action double double> touch)
+{
+	var<Action event> ret = function(event)
+	{
+		touch(event.pageX, event.pageY);
+	};
+
+	return ret;
+}
+
 function <Action event> @@_GetEvTouch(<Action double double> touch)
 {
 	var<Action event> ret = function(event)
@@ -64,14 +74,32 @@ function <Action event> @@_GetEvMouse(<Action double double> touch)
 
 function <void> @(UNQN)_INIT()
 {
-	if (window.ontouchstart === null)
+	if (window.onpointerdown === null)
 	{
+console.log("P");
+		CanvasBox.onpointerdown  = @@_GetEvPointer(@@_TouchStart);
+		CanvasBox.onpointermove  = @@_GetEvPointer(@@_TouchMove);
+		CanvasBox.onpointerup    = @@_GetEvPointer(@@_TouchEnd);
+		CanvasBox.onpointerleave = @@_GetEvPointer(@@_TouchEnd);
+	}
+	else if (window.onmspointerdown === null)
+	{
+console.log("MS-P");
+		CanvasBox.onmspointerdown  = @@_GetEvPointer(@@_TouchStart);
+		CanvasBox.onmspointermove  = @@_GetEvPointer(@@_TouchMove);
+		CanvasBox.onmspointerup    = @@_GetEvPointer(@@_TouchEnd);
+		CanvasBox.onmspointerleave = @@_GetEvPointer(@@_TouchEnd);
+	}
+	else if (window.ontouchstart === null)
+	{
+console.log("T");
 		CanvasBox.ontouchstart = @@_GetEvTouch(@@_TouchStart);
 		CanvasBox.ontouchmove  = @@_GetEvTouch(@@_TouchMove);
 		CanvasBox.ontouchend   = @@_GetEvTouch(@@_TouchEnd);
 	}
 	else
 	{
+console.log("M");
 		CanvasBox.onmousedown  = @@_GetEvMouse(@@_TouchStart);
 		CanvasBox.onmousemove  = @@_GetEvMouse(@@_TouchMove);
 		CanvasBox.onmouseup    = @@_GetEvMouse(@@_TouchEnd);
