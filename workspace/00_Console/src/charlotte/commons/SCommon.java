@@ -92,7 +92,7 @@ public class SCommon {
 
 	// List<PRIMITIVE> -> PRIMITIVE[] ここから
 
-	public static boolean[] toPrimitiveArray(List<Boolean> list) {
+	public static boolean[] toBooleanArray(List<Boolean> list) {
 		boolean[] arr = new boolean[list.size()];
 
 		for (int index = 0; index < list.size(); index++) {
@@ -101,9 +101,68 @@ public class SCommon {
 		return arr;
 	}
 
-	// TODO
-	// TODO
-	// TODO
+	public static byte[] toByteArray(List<Byte> list) {
+		byte[] arr = new byte[list.size()];
+
+		for (int index = 0; index < list.size(); index++) {
+			arr[index] = list.get(index);
+		}
+		return arr;
+	}
+
+	public static char[] toCharArray(List<Character> list) {
+		char[] arr = new char[list.size()];
+
+		for (int index = 0; index < list.size(); index++) {
+			arr[index] = list.get(index);
+		}
+		return arr;
+	}
+
+	public static short[] toShortArray(List<Short> list) {
+		short[] arr = new short[list.size()];
+
+		for (int index = 0; index < list.size(); index++) {
+			arr[index] = list.get(index);
+		}
+		return arr;
+	}
+
+	public static int[] toIntArray(List<Integer> list) {
+		int[] arr = new int[list.size()];
+
+		for (int index = 0; index < list.size(); index++) {
+			arr[index] = list.get(index);
+		}
+		return arr;
+	}
+
+	public static long[] toLongArray(List<Long> list) {
+		long[] arr = new long[list.size()];
+
+		for (int index = 0; index < list.size(); index++) {
+			arr[index] = list.get(index);
+		}
+		return arr;
+	}
+
+	public static float[] toFloatArray(List<Float> list) {
+		float[] arr = new float[list.size()];
+
+		for (int index = 0; index < list.size(); index++) {
+			arr[index] = list.get(index);
+		}
+		return arr;
+	}
+
+	public static double[] toDoubleArray(List<Double> list) {
+		double[] arr = new double[list.size()];
+
+		for (int index = 0; index < list.size(); index++) {
+			arr[index] = list.get(index);
+		}
+		return arr;
+	}
 
 	// List<PRIMITIVE> -> PRIMITIVE[] ここまで
 }
