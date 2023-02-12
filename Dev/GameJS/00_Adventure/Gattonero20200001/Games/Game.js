@@ -61,6 +61,13 @@ function* <generatorForTask> GameMain()
 
 //		Draw(P_Bg_PCŽº[Jikantai_e_YUUGATA], Screen_W / 2, Screen_H / 2, 1.0, 0.0, 1.0);
 
+//		SetPrint(10, 30, 30);
+//		SetPrint(10, Screen_H - 10, 30);
+		SetPrint(10, Screen_H / 2, 30);
+		SetFSize(20);
+		SetColor("#ffffff");
+		PrintLine(GetMouseDown() + ", " + GetMouseX() + ", " + GetMouseY());
+
 		ExecuteAllActor();
 		ExecuteAllTask(GameTasks);
 		yield 1;
