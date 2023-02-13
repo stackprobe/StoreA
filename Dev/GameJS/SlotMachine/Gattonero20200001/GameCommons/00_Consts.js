@@ -3,7 +3,7 @@
 */
 
 /*
-	デフォルトの音量 - 音楽
+	デフォルトの音量 -- 音楽
 	0.0 ～ 1.0
 */
 var<double> DEFAULT_MUSIC_VOLUME = 0.25;
