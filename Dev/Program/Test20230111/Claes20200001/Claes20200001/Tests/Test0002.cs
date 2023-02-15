@@ -10,7 +10,8 @@ namespace Charlotte.Tests
 {
 	public class Test0002
 	{
-		private const string INPUT_ROOT_DIR = @"C:\削除予定\20230201_ウマ娘キャラページDL";
+		//private const string INPUT_ROOT_DIR = @"C:\削除予定\20230201_ウマ娘キャラページDL";
+		private const string INPUT_ROOT_DIR = @"C:\temp";
 
 		public void Test01()
 		{
