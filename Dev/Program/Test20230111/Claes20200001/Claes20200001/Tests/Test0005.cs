@@ -11,7 +11,7 @@ namespace Charlotte.Tests
 	{
 		public void Test01()
 		{
-			Console.WriteLine(Encoding.ASCII.GetString(SCommon.Base64.I.Decode("SGVsbG8sIEhhcHB5IFdvcmxkIQ")));
+			Console.WriteLine(string.Join(" ", SCommon.Serializer.I.Split("7EAGNjYGDwSM3JyddhBbESCwoq2YCM8PyinBRFAJsSOoAd4")));
 		}
 	}
 }
